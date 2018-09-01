@@ -23,5 +23,6 @@ To Change it, modify the `security.php` file and change :
 - `$cred_pass` (The password is hashed, and can be generate with: `password_hash("password", PASSWORD_DEFAULT)`
 
 ### License
-The project is based on AdminLTE
+The project is based on AdminLTE.
+
 AdminLTE is an open source project by [AdminLTE.IO](https://adminlte.io) that is licensed under [MIT](http://opensource.org/licenses/MIT). AdminLTE.IO
