@@ -1,6 +1,8 @@
 # M0N1T0R
 PHP Linux System Monitor based on [AdminLTE](https://github.com/almasaeed2010/AdminLTE)
 
+![Screenshot](Screenshot.jpg)
+
 This script gives a glance on:
 - Load
 - Connected Users
