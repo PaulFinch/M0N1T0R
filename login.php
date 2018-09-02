@@ -1,3 +1,41 @@
+<?PHP
+  session_start();
+  if ((isset($_GET["action"])) && ($_GET["action"]=='login')) {
+    if (((isset($_POST['chklogin'])) && (isset($_POST['chkpass']))) && ((!empty($_POST['chklogin'])) && (!empty($_POST['chkpass'])))) {
+
+      $cred_login = 'paulfinch';
+      $cred_pass = '$2y$10$vNHWXv0whIhGZ9oFcKnnluKbfFIa8HZV90jBRwG.33A0P8NZhoxQO';
+
+      if ((strcmp($_POST['chklogin'], $cred_login) == 0) && (password_verify($_POST['chkpass'], $cred_pass))) {
+        $_SESSION['user'] = $cred_login;
+        header ("location: index.php");
+        exit();
+      } else {
+        $_SESSION = array(); 
+        @session_write_close();
+        @session_destroy ();
+        header ("location: login.php");
+        exit();
+      }
+    }
+    else {
+      $_SESSION = array(); 
+      @session_write_close();
+      @session_destroy();
+      header ("location: login.php");
+      exit();
+    }
+  }
+
+  if ((isset($_GET["action"])) && ($_GET["action"]=='logout')) {
+    $_SESSION = array(); 
+    @session_write_close();
+    @session_destroy();
+    header ("location: login.php");
+    exit();
+  }
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -6,9 +44,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>M0N1T0R | Log in</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <link rel="stylesheet" href="AdminLTE/bower_components/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="AdminLTE/bower_components/font-awesome/css/font-awesome.min.css">
-  <link rel="stylesheet" href="AdminLTE/dist/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="Lib/AdminLTE/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="Lib/AdminLTE/bower_components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="Lib/AdminLTE/dist/css/AdminLTE.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 
@@ -19,7 +57,7 @@
     </div>
     <div class="login-box-body">
       <p class="login-box-msg">Sign in to start your session</p>
-      <form action="security.php?action=login" method="post">
+      <form action="?action=login" method="post">
         <div class="form-group has-feedback">
           <input type="login" id="chklogin" name="chklogin" class="form-control" placeholder="Login">
           <span class="fa fa-user form-control-feedback"></span>
@@ -36,8 +74,8 @@
       </form>
     </div>
   </div>
-  <script src="AdminLTE/bower_components/jquery/dist/jquery.min.js"></script>
-  <script src="AdminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="Lib/AdminLTE/bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="Lib/AdminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 </body>
 
 </html>

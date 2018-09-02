@@ -26,6 +26,19 @@ class Server
 	var $processes;
 	var $netstat;
 
+	var $cpu_alarm_threshold = 80;
+	var $cpu_warning_threshold = 50;
+	var $mem_alarm_threshold = 80;
+	var $mem_warning_threshold = 50;
+	var $swap_alarm_threshold = 80;
+	var $swap_warning_threshold = 50;
+	var $storage_alarm_threshold = 90;
+	var $storage_warning_threshold = 80;
+	var $temp_alarm_threshold = 65;
+	var $temp_warning_threshold = 45;
+	var $hddtemp_alarm_threshold = 50;
+	var $hddtemp_warning_threshold = 40;
+
 	var $alarms;
 	var $warnings;
 
@@ -109,9 +122,9 @@ class Server
 			$this->top_swap_pct = sprintf('%.0f',($this->top_swap[2] / $this->top_swap[0]) * 100);
 		}
 
-		if ($this->top_cpu_pct > 80) { $this->alarms['dashboard']++; } elseif ($this->top_cpu_pct > 50) { $this->warnings['dashboard']++; }
-		if ($this->top_mem_pct > 80) { $this->alarms['dashboard']++; } elseif ($this->top_mem_pct > 50) { $this->warnings['dashboard']++; }
-		if ($this->top_swap_pct > 80) { $this->alarms['dashboard']++; } elseif ($this->top_swap_pct > 50) { $this->warnings['dashboard']++; }
+		if ($this->top_cpu_pct > $this->cpu_alarm_threshold) { $this->alarms['dashboard']++; } elseif ($this->top_cpu_pct > $this->cpu_warning_threshold) { $this->warnings['dashboard']++; }
+		if ($this->top_mem_pct > $this->mem_alarm_threshold) { $this->alarms['dashboard']++; } elseif ($this->top_mem_pct > $this->mem_warning_threshold) { $this->warnings['dashboard']++; }
+		if ($this->top_swap_pct > $this->swap_alarm_threshold) { $this->alarms['dashboard']++; } elseif ($this->top_swap_pct > $this->swap_warning_threshold) { $this->warnings['dashboard']++; }
 
 		$uptime = strtok( exec( "cat /proc/uptime" ), "." );
 		$this->uptime[0] = sprintf( "%2d", ($uptime/(3600*24)) );
@@ -127,7 +140,7 @@ class Server
 			$found = preg_match("/^([\/\w\d]+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)%\s([\/\w\d]+)/", $df, $df_matches);
 			if ($found == 1) {
 				array_shift($df_matches);
-				if ($df_matches[4] > 90) { $this->alarms['dashboard']++; } elseif ($df_matches[4] > 75) { $this->warnings['dashboard']++; }
+				if ($df_matches[4] > $this->storage_alarm_threshold) { $this->alarms['dashboard']++; } elseif ($df_matches[4] > $this->storage_warning_threshold) { $this->warnings['dashboard']++; }
 				array_push($this->partitions, $df_matches);
 			}
 		}
@@ -140,7 +153,7 @@ class Server
 				$found = preg_match("/^([\w\d ]+):\s+.(\d+\.\d+).\w\s+/", $sensor, $sensor_matches);
 				if ($found == 1) {
 					array_shift($sensor_matches);
-					if ($sensor_matches[1] > 60) { $this->alarms['dashboard']++; } elseif ($sensor_matches[1] > 45) { $this->warnings['dashboard']++; }
+					if ($sensor_matches[1] > $this->temp_alarm_threshold) { $this->alarms['dashboard']++; } elseif ($sensor_matches[1] > $this->temp_warning_threshold) { $this->warnings['dashboard']++; }
 					array_push($this->temperatures, $sensor_matches);
 				}
 			}
@@ -158,7 +171,7 @@ class Server
 		if (is_executable("/usr/bin/hddtemp")) {
 			foreach ($disks as $disk) {
 				$hddtemp = shell_exec("hddtemp -n /dev/".$disk);
-				if ($hddtemp > 50) { $this->alarms['dashboard']++; } elseif ($hddtemp > 40) { $this->warnings['dashboard']++; }
+				if ($hddtemp > $this->hddtemp_alarm_threshold) { $this->alarms['dashboard']++; } elseif ($hddtemp > $this->hddtemp_warning_threshold) { $this->warnings['dashboard']++; }
 				$this->disks_temperatures[$disk] = $hddtemp;
 			}
 		}
