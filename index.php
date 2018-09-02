@@ -134,15 +134,16 @@
 
     <footer class="main-footer">
       <div class="pull-right">AdminLTE 2.4.5</div>
-      M0N1T0R v1.1
+      M0N1T0R v1.2
     </footer>
 
     <aside class="control-sidebar control-sidebar-dark">
       <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-        <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-info-circle"></i></a></li>
+        <li><a href="#control-sidebar-info-tab" data-toggle="tab"><i class="fa fa-info-circle"></i></a></li>
+        <li><a href="#control-sidebar-thresholds-tab" data-toggle="tab"><i class="fa fa-bell"></i></a></li>
       </ul>
       <div class="tab-content">
-        <div class="tab-pane active" id="control-sidebar-home-tab">
+        <div class="tab-pane active" id="control-sidebar-info-tab">
           <h3 class="control-sidebar-heading"><b>System Information</b></h3>
           <?PHP
             echo "<div class='form-group'><label class='control-sidebar-subheading'><b>Host:</b> ".$server->host."</label></div>";
@@ -150,6 +151,19 @@
             echo "<div class='form-group'><label class='control-sidebar-subheading'><b>Server:</b> ".$server->software."</label></div>";
             echo "<div class='form-group'><label class='control-sidebar-subheading'><b>Kernel:</b> ".$server->kernel."</label></div>";
             echo "<div class='form-group'><label class='control-sidebar-subheading'><b>PHP:</b> ".$server->php."</label></div>";
+          ?>
+        </div>
+        <div class="tab-pane" id="control-sidebar-thresholds-tab">
+          <h3 class="control-sidebar-heading"><b>Thresholds</b></h3>
+          <?PHP
+            echo "<div class='form-group'><label class='control-sidebar-subheading'><b>Alarms</b></label></div>";
+            foreach ($server->alarm_thresholds as $key => $value) {
+              echo "<div class='form-group'><label class='control-sidebar-subheading'>".strtoupper($key).": ".$value."</label></div>";
+            }
+            echo "<div class='form-group'><label class='control-sidebar-subheading'><b>Warnings</b></label></div>";
+            foreach ($server->warning_thresholds as $key => $value) {
+              echo "<div class='form-group'><label class='control-sidebar-subheading'>".strtoupper($key).": ".$value."</label></div>";
+            }
           ?>
         </div>
       </div>

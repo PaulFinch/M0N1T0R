@@ -1,5 +1,7 @@
 <?PHP
   session_start();
+  setlocale (LC_ALL, 'en_US.utf8','eng');
+  
   if ((isset($_GET["action"])) && ($_GET["action"]=='login')) {
     if (((isset($_POST['chklogin'])) && (isset($_POST['chkpass']))) && ((!empty($_POST['chklogin'])) && (!empty($_POST['chkpass'])))) {
 
