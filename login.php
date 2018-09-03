@@ -5,8 +5,8 @@
   if ((isset($_GET["action"])) && ($_GET["action"]=='login')) {
     if (((isset($_POST['chklogin'])) && (isset($_POST['chkpass']))) && ((!empty($_POST['chklogin'])) && (!empty($_POST['chkpass'])))) {
 
-      $cred_login = 'paulfinch';
-      $cred_pass = '$2y$10$vNHWXv0whIhGZ9oFcKnnluKbfFIa8HZV90jBRwG.33A0P8NZhoxQO';
+      $cred_login = 'admin';
+      $cred_pass = '$2y$10$JnEYR9QPPJYVqK4np2rW6eLzVe9933KFoS5aVCadHjqg3K3xHS2ui';
 
       if ((strcmp($_POST['chklogin'], $cred_login) == 0) && (password_verify($_POST['chkpass'], $cred_pass))) {
         $_SESSION['user'] = $cred_login;
